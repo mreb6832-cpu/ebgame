@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EBGAME | Open World Car Simulator</title>
+
+    <meta name="description" content="EBGAME is a realistic 3D open world car simulator. Drive, explore and enjoy the city.">
+
+    <meta name="theme-color" content="#080b12">
+
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <h1>EBGAME</h1>
+            <p>OPEN WORLD CAR SIMULATOR</p>
+
+            <div class="loading-bar">
+                <div id="loading-progress"></div>
+            </div>
+
+            <span id="loading-text">Loading your world...</span>
+        </div>
+    </div>
+
+    <!-- MAIN GAME -->
+    <main id="game-container">
+
+        <canvas id="game-canvas"></canvas>
+
+        <!-- GAME HUD -->
+        <div id="game-hud">
+
+            <div class="brand">
+                <h2>EBGAME</h2>
+                <span>OPEN WORLD</span>
+            </div>
+
+            <!-- SPEEDOMETER -->
+            <div id="speedometer">
+                <span id="speed-value">0</span>
+                <span class="speed-unit">KM/H</span>
+            </div>
+
+            <!-- VEHICLE INFO -->
+            <div id="vehicle-info">
+                <span id="vehicle-name">SPORT CAR</span>
+                <span id="gear-value">GEAR: N</span>
+            </div>
+
+            <!-- GAME ACTIONS -->
+            <div id="game-actions">
+                <button id="camera-button">CAMERA</button>
+                <button id="map-button">MAP</button>
+                <button id="settings-button">SETTINGS</button>
+            </div>
+
+            <!-- MOBILE CONTROLS -->
+            <div id="mobile-controls">
+
+                <div class="steering-controls">
+                    <button id="steer-left">◀</button>
+                    <button id="steer-right">▶</button>
+                </div>
+
+                <div class="driving-controls">
+                    <button id="brake-button">BRAKE</button>
+                    <button id="accelerate-button">GAS</button>
+                </div>
+
+            </div>
+
+            <!-- CONTROLLER STATUS -->
+            <div id="controller-status">
+                CONTROLLER: NOT CONNECTED
+            </div>
+
+        </div>
+
+        <!-- PAUSE MENU -->
+        <div id="pause-menu" class="hidden">
+            <h1>EBGAME</h1>
+            <h2>PAUSED</h2>
+            <button id="resume-button">RESUME</button>
+            <button id="restart-button">RESTART</button>
+        </div>
+
+    </main>
+
+    <!-- GAME SCRIPT -->
+    <script type="module" src="./src/main.js"></script>
+
+</body>
+</html>
