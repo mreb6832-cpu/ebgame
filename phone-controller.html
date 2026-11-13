@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#080808">
+<title>EBGAME Racing Controller</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.dashboard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse at center, #343434, #080808 75%);
+    overflow: hidden;
+}
+
+/* TOP BAR */
+
+.top-bar {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    z-index: 5;
+}
+
+.top-button {
+    width: 55px;
+    height: 55px;
+    border: 2px solid #777;
+    border-radius: 12px;
+    background: linear-gradient(#555, #111);
+    color: white;
+    font-size: 25px;
+}
+
+.brand {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: #eee;
+    text-shadow: 0 0 12px #00aaff;
+}
+
+/* STATUS */
+
+.status {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #aaa;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+#connection-status.connected {
+    color: #42e98b;
+}
+
+/* GEAR SELECTOR */
+
+.gear-panel {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 105px;
+    height: 225px;
+    padding: 10px;
+    border: 4px solid #777;
+    border-radius: 17px;
+    background: linear-gradient(120deg,#555,#080808);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 5;
+}
+
+.gear {
+    flex: 1;
+    border: 2px solid #555;
+    border-radius: 8px;
+    background: linear-gradient(#333,#080808);
+    color: white;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.gear.active {
+    color: #ffbd45;
+    border-color: #ffbd45;
+    box-shadow: 0 0 12px #ffbd45;
+}
+
+/* STEERING WHEEL */
+
+.wheel-area {
+    position: absolute;
+    right: 3%;
+    bottom: 2%;
+    width: min(43vw, 390px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.steering-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 19px solid #171717;
+    background:
+      radial-gradient(circle, #555 0%, #111 62%, #050505 70%);
+    box-shadow:
+      inset 0 0 12px #777,
+      0 8px 22px #000;
+    position: relative;
+    touch-action: none;
+    transition: transform .04s linear;
+}
+
+.steering-wheel::before,
+.steering-wheel::after {
+    content: "";
+    position: absolute;
+    width: 24%;
+    height: 62%;
+    background: linear-gradient(90deg,#777,#151515);
+    top: 20%;
+    left: 38%;
+    border-radius: 12px;
+    transform-origin: center;
+}
+
+.steering-wheel::after {
+    transform: rotate(90deg);
+}
+
+.wheel-center {
+    position: absolute;
+    z-index: 2;
+    width: 37%;
+    height: 37%;
+    top: 31.5%;
+    left: 31.5%;
+    border-radius: 50%;
+    background: radial-gradient(circle,#aaa,#444,#111);
+    border: 8px solid #222;
+    box-shadow: inset 0 0 8px #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+}
+
+/* PEDALS */
+
+.pedals {
+    position: absolute;
+    bottom: 5%;
+    left: 4%;
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.pedal {
+    width: clamp(65px, 15vw, 115px);
+    height: clamp(115px, 24vh, 175px);
+    border-radius: 13px;
+    border: 4px solid #999;
+    background: linear-gradient(120deg,#888,#222);
+    box-shadow: 0 6px 12px #000;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    touch-action: none;
+}
+
+.pedal span {
+    display: block;
+    font-size: 23px;
+    margin-bottom: 12px;
+}
+
+.pedal.active {
+    filter: brightness(1.7);
+    transform: scale(.96);
+}
+
+.brake {
+    background: linear-gradient(120deg,#7c2525,#260707);
+}
+
+.gas {
+    background: linear-gradient(120deg,#237b43,#092a15);
+}
+
+/* SPEED */
+
+.speed-display {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 130px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0 2px 5px black;
+}
+
+.speed-display small {
+    font-size: 13px;
+    color: #bbb;
+}
+
+/* RESPONSIVE */
+
+@media (orientation: portrait) {
+    .dashboard::after {
+        content: "ROTATE YOUR PHONE TO LANDSCAPE";
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        background: #080808;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 17px;
+        letter-spacing: 2px;
+        padding: 30px;
+        color: #38bdf8;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="top-bar">
+        <button class="top-button" id="pause-button">Ⅱ</button>
+        <button class="top-button" id="camera-button">◎</button>
+    </div>
+
+    <div class="brand">EBGAME</div>
+
+    <div class="status">
+        <span id="connection-status">CONNECTING...</span>
+    </div>
+
+    <div class="gear-panel">
+        <button class="gear" data-gear="P">P</button>
+        <button class="gear" data-gear="R">R</button>
+        <button class="gear" data-gear="N">N</button>
+        <button class="gear active" data-gear="D">D</button>
+    </div>
+
+    <div class="pedals">
+
+        <button class="pedal brake" id="brake">
+            <span>▤</span>
+            BRAKE
+        </button>
+
+        <button class="pedal gas" id="gas">
+            <span>▤</span>
+            GAS
+        </button>
+
+    </div>
+
+    <div class="wheel-area">
+        <div class="steering-wheel" id="steering-wheel">
+            <div class="wheel-center">EB</div>
+        </div>
+    </div>
+
+    <div class="speed-display">
+        <span id="speed">0</span>
+        <small>km/h</small>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="./src/phone-controller.js"></script>
+
+</body>
+</html>
